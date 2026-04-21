@@ -4,118 +4,78 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+import React from 'react';
+import './App.css';
+
+const API_URL = "https://api.github.com/users/Hades-1496/repos"
+// --- COMPONENTES DE SECCIÓN ---
+
+const Header = () => (
+  <header className="header">
+    <h1>Tu Nombre o Marca</h1>
+    <nav>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+);
+
+const Hero = () => (
+  <section id="sobre-mi" className="section hero">
+    <h2>¡Hola! Soy un Desarrollador Web</h2>
+    <p>
+      Me apasiona crear experiencias web increíbles, aprender nuevas tecnologías 
+      y resolver problemas complejos. Actualmente enfocado en React y el ecosistema frontend.
+    </p>
+  </section>
+);
+
+const Proyectos = () => {
+  // Array de datos para tus proyectos. ¡Fácil de actualizar!
+  const listaProyectos = [
+    
+  ];
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <section id="proyectos" className="section">
+      <h2>Mis Proyectos</h2>
+      <div className="grid-proyectos">
+        {listaProyectos.map((proyecto) => (
+          <div key={proyecto.id} className="tarjeta-proyecto">
+            <h3>{proyecto.titulo}</h3>
+            <p>{proyecto.descripcion}</p>
+            <a href={proyecto.enlace} target="_blank" rel="noreferrer">Ver código</a>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
 
-      <div className="ticks"></div>
+const Contacto = () => (
+  <section id="contacto" className="section footer">
+    <h2>¿Hablamos?</h2>
+    <p>Siempre estoy abierto a nuevas oportunidades y colaboraciones.</p>
+    <div className="enlaces-contacto">
+      <a href="mailto:tuemail@ejemplo.com">Envíame un correo</a>
+      <a href="https://github.com/tuusuario" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://linkedin.com/in/tuusuario" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+  </section>
+);
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+// --- COMPONENTE PRINCIPAL ---
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+export default function App() {
+  return (
+    <div className="portfolio-container">
+      <Header />
+      <main>
+        <Hero />
+        <Proyectos />
+      </main>
+      <Contacto />
+    </div>
+  );
 }
-
-export default App
