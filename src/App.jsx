@@ -52,12 +52,13 @@ const Proyectos = () => {
     <section id="proyectos" className="section">
       <h2>Mis Proyectos</h2>
       <div className="grid-proyectos">
-        {listaProyectos.map((proyecto) => (
-          <div key={proyecto.id} className="tarjeta-proyecto">
+        {listaProyectos.filter((proyecto) => !proyecto.fork).map((proyecto) => (
+          !proyecto.fork && <div key={proyecto.id} className="tarjeta-proyecto">
             <h3>{proyecto.name}</h3>
             <p>{proyecto.description || "Sin descripción"}</p>
             <a href={proyecto.html_url} target="_blank" rel="noreferrer">Ver código</a>
           </div>
+          
         ))}
       </div>
     </section>
