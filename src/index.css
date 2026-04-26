@@ -15,7 +15,7 @@ body {
 }
 
 .portfolio-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -49,7 +49,7 @@ body {
 
 /* Secciones generales */
 .section {
-  padding: 60px 0;
+  padding: 0;
 }
 
 .section h2 {
