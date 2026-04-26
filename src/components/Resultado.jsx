@@ -146,7 +146,39 @@ function Experiencia({id}) {
     }
   
 };
-const Error404 = () => {
+
+const Habiidades = () => {
+  return(<>
+    <section id="resultado" className="section">
+      <article>
+      <h2>Soft Skills</h2>
+      <ul style={{textDecoration:'none'}}>
+        <li>Flexible</li>
+        <li>Curioso</li>
+        <li>Resolutivo</li>
+        <li>Con actitud positiva</li>
+      </ul>
+      </article>
+      <article>
+      <h2>Hard Skills/Conocimientos</h2>
+      <ul style={{textDecoration:'none'}}>
+        <li>Adobe AutoCAD</li>
+        <li>Búsqueda de subvencioones</li>
+        <li>Conocimientos de arquitectura ARM</li>
+        <li>Conttrol de medios de comunicación: SPI, CAN, I2C, MQTT</li>
+        <li>Eficiencia energética</li>
+        <li>Conocimiento de lenguajes de eprogramación como: C, C++, Ensamblador, Java, Javascript, C#, MatLab, PHP</li>
+        <li>Conocimiento de lenguajes de dominio MongoDB y SQL como sus sistemas de gestión: MySQL, MariaDB, XAMPP</li>
+        <li>Conocimiento de lenguajes de marcas: HTML5, XML, CSS</li>
+        <li>Conocimiento de Microsoft Excel y Word</li>
+        <li>Software: AutoCAD, LibreCAD, Microsoft Office, LibreOffice</li>
+      </ul>
+      </article>
+
+    </section>
+  </>);
+}
+const Error501 = () => {
   return (
     <section id="resultado" className="section">
       <h2>Error 501</h2>
@@ -164,7 +196,9 @@ export default function Resultado({ id }) {
     case "empresas":
     case "estudios":
       return <Experiencia id={id}/>;
+    case "skills":
+      return <Habiidades/>
     default:
-      return <Error404 />;
+      return <Error501 />;
   }
 }
