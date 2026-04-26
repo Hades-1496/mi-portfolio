@@ -21,7 +21,6 @@ export default function Navegador() {
             flexDirection: "column",
             gap: "10px",
             padding: "20px",
-            minHeight: "100vh",
           }}
         >
           {menu.map((e) => (

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useFetch } from "../hooks/useFetch";
 import "./Experiencia.js";
 import { Estudios, Laboral } from "./Experiencia.js";
+import { Contacto } from "./Contacto.jsx";
 const API_URL_1 = "https://api.github.com/users/Hades-1496/repos";
 
 const Intro = () => {
@@ -197,7 +198,9 @@ export default function Resultado({ id }) {
     case "estudios":
       return <Experiencia id={id}/>;
     case "skills":
-      return <Habiidades/>
+      return <Habiidades />
+    case "contacto":
+      return <Contacto />;
     default:
       return <Error501 />;
   }
