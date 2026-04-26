@@ -46,6 +46,7 @@ const Intro = () => {
   );
 };
 
+
 const Proyecto = () => {
   // Buscador de proyectos
   const [filtro, setFiltro] = useState("");
@@ -113,6 +114,7 @@ const Proyecto = () => {
     </section>
   );
 };
+
 function Experiencia({id}) {
     switch (id) {
         case "empresas":
