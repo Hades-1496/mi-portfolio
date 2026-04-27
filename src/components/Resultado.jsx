@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useFetch } from "../hooks/useFetch";
 import "./Experiencia.js";
 import { Estudios, Laboral } from "./Experiencia.js";
-import { Contacto } from "./Contacto.jsx";
+import Contacto from "./Contacto.jsx";
 const API_URL_1 = "https://api.github.com/users/Hades-1496/repos";
 
 const Intro = () => {
@@ -50,14 +50,16 @@ const Intro = () => {
 const Proyecto = () => {
   // Buscador de proyectos
   const [filtro, setFiltro] = useState("");
+  
   // Proyectos
   const { data: listaProyectos, loading, error } = useFetch(API_URL_1);
-  const proyectosFiltrados = listaProyectos.filter((proyecto) => {
+  // useMemo en el buscador: Sólo lo recalculará si cambian los repos o tu búsqueda.
+  const proyectosFiltrados = useMemo(() => listaProyectos.filter((proyecto) => {
     const coincideNombre = proyecto.name
       .toLowerCase()
       .includes(filtro.toLowerCase());
     return coincideNombre;
-  });
+  }),[listaProyectos, filtro]); 
   if (loading) {
     return (
       <section id="resultado" className="section">
