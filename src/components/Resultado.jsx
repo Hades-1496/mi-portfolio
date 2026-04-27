@@ -3,6 +3,7 @@ import { useFetch } from "../hooks/useFetch";
 import "./Experiencia.js";
 import { Estudios, Laboral } from "./Experiencia.js";
 import Contacto from "./Contacto.jsx";
+import { Routes, Route, Navigate } from "react-router-dom";
 const API_URL_1 = "https://api.github.com/users/Hades-1496/repos";
 
 const Intro = () => {
@@ -46,20 +47,23 @@ const Intro = () => {
   );
 };
 
-
 const Proyecto = () => {
   // Buscador de proyectos
   const [filtro, setFiltro] = useState("");
-  
+
   // Proyectos
   const { data: listaProyectos, loading, error } = useFetch(API_URL_1);
   // useMemo en el buscador: Sólo lo recalculará si cambian los repos o tu búsqueda.
-  const proyectosFiltrados = useMemo(() => listaProyectos.filter((proyecto) => {
-    const coincideNombre = proyecto.name
-      .toLowerCase()
-      .includes(filtro.toLowerCase());
-    return coincideNombre;
-  }),[listaProyectos, filtro]); 
+  const proyectosFiltrados = useMemo(
+    () =>
+      listaProyectos.filter((proyecto) => {
+        const coincideNombre = proyecto.name
+          .toLowerCase()
+          .includes(filtro.toLowerCase());
+        return coincideNombre;
+      }),
+    [listaProyectos, filtro],
+  );
   if (loading) {
     return (
       <section id="resultado" className="section">
@@ -97,7 +101,7 @@ const Proyecto = () => {
       </div>
 
       {/* Proyectos */}
-      <h2>{filtro == '' ?'Todos los proyectos' : 'Resultados:'}</h2>
+      <h2>{filtro == "" ? "Todos los proyectos" : "Resultados:"}</h2>
       <div className="grid-proyectos">
         {proyectosFiltrados.length > 0 ? (
           proyectosFiltrados.map((proyecto) => (
@@ -117,72 +121,84 @@ const Proyecto = () => {
   );
 };
 
-function Experiencia({id}) {
-    switch (id) {
-        case "empresas":
-            return (
-    <section id="resultado" className="section">
-        <h2>Experiencia Laboral</h2>
-        {Laboral.map((e) => (
-            <article key= {e.id} style={{margin: '20px 0'}}>
-                <h3 style={{marginBottom:'0'}}>{e.title}</h3>
-                <p style={{fontSize:'0.8rem', margin:'0',padding:'0'}}>{e.occupation}<br/>{e.date}</p>
-                <p style={{fontWeight:'bold'}}>{e.description}</p>
+function Experiencia({ id }) {
+  switch (id) {
+    case "laboral":
+      return (
+        <section id="resultado" className="section">
+          <h2>Experiencia Laboral</h2>
+          {Laboral.map((e) => (
+            <article key={e.id} style={{ margin: "20px 0" }}>
+              <h3 style={{ marginBottom: "0" }}>{e.title}</h3>
+              <p style={{ fontSize: "0.8rem", margin: "0", padding: "0" }}>
+                {e.occupation}
+                <br />
+                {e.date}
+              </p>
+              <p style={{ fontWeight: "bold" }}>{e.description}</p>
             </article>
-        ))}
-        
-    </section>
-  );
-    case "estudios":
-        return (
-    <section id="resultado" className="section">
-        <h2>Carreras</h2>
-        {Estudios.map((e) => (
-            <article key= {e.id}>
-                <h3 style={{marginBottom:'0'}}>{e.title}</h3>
-                <p style={{fontSize:'0.8rem', margin:'0',padding:'0'}}>{e.institution}<br/>
-                {e.date}</p>
-                <p style={{fontWeight:'bold'}}>{e.desc}</p>
+          ))}
+        </section>
+      );
+    case "carreras":
+      return (
+        <section id="resultado" className="section">
+          <h2>Carreras</h2>
+          {Estudios.map((e) => (
+            <article key={e.id}>
+              <h3 style={{ marginBottom: "0" }}>{e.title}</h3>
+              <p style={{ fontSize: "0.8rem", margin: "0", padding: "0" }}>
+                {e.institution}
+                <br />
+                {e.date}
+              </p>
+              <p style={{ fontWeight: "bold" }}>{e.desc}</p>
             </article>
-        ))}
-        
-    </section>
-  );
-    }
-  
-};
+          ))}
+        </section>
+      );
+  }
+}
 
 const Habiidades = () => {
-  return(<>
-    <section id="resultado" className="section">
-      <article>
-      <h2>Soft Skills</h2>
-      <ul style={{textDecoration:'none'}}>
-        <li>Flexible</li>
-        <li>Curioso</li>
-        <li>Resolutivo</li>
-        <li>Con actitud positiva</li>
-      </ul>
-      </article>
-      <article>
-      <h2>Hard Skills/Conocimientos</h2>
-      <ul style={{textDecoration:'none'}}>
-        <li>Adobe AutoCAD</li>
-        <li>Búsqueda de subvencioones</li>
-        <li>Conocimientos de arquitectura ARM</li>
-        <li>Conttrol de medios de comunicación: SPI, CAN, I2C, MQTT</li>
-        <li>Eficiencia energética</li>
-        <li>Conocimiento de lenguajes de eprogramación como: C, C++, Ensamblador, Java, Javascript, C#, MatLab, PHP</li>
-        <li>Conocimiento de lenguajes de dominio MongoDB y SQL como sus sistemas de gestión: MySQL, MariaDB, XAMPP</li>
-        <li>Conocimiento de lenguajes de marcas: HTML5, XML, CSS</li>
-        <li>Conocimiento de Microsoft Excel y Word</li>
-        <li>Software: AutoCAD, LibreCAD, Microsoft Office, LibreOffice</li>
-      </ul>
-      </article>
-
-    </section>
-  </>);
-}
+  // Pude haberlo hecho mejor
+  return (
+    <>
+      <section id="resultado" className="section">
+        <article>
+          <h2>Soft Skills</h2>
+          <ul style={{ textDecoration: "none" }}>
+            <li>Flexible</li>
+            <li>Curioso</li>
+            <li>Resolutivo</li>
+            <li>Con actitud positiva</li>
+          </ul>
+        </article>
+        <article>
+          <h2>Hard Skills/Conocimientos</h2>
+          <ul style={{ textDecoration: "none" }}>
+            <li>Adobe AutoCAD</li>
+            <li>Búsqueda de subvencioones</li>
+            <li>Conocimientos de arquitectura ARM</li>
+            <li>Conttrol de medios de comunicación: SPI, CAN, I2C, MQTT</li>
+            <li>Eficiencia energética</li>
+            <li>
+              Conocimiento de lenguajes de eprogramación como: C, C++,
+              Ensamblador, Java, Javascript, C#, MatLab, PHP
+            </li>
+            <li>
+              Conocimiento de lenguajes de dominio MongoDB y SQL como sus
+              sistemas de gestión: MySQL, MariaDB, XAMPP
+            </li>
+            <li>Conocimiento de lenguajes de marcas: HTML5, XML, CSS</li>
+            <li>Conocimiento de Microsoft Excel y Word</li>
+            <li>Software: AutoCAD, LibreCAD, Microsoft Office, LibreOffice</li>
+          </ul>
+        </article>
+      </section>
+    </>
+  );
+};
 const Error501 = () => {
   return (
     <section id="resultado" className="section">
@@ -192,20 +208,19 @@ const Error501 = () => {
   );
 };
 
-export default function Resultado({ id }) {
-  switch (id) {
-    case "intro":
-      return <Intro />;
-    case "proyectos":
-      return <Proyecto />;
-    case "empresas":
-    case "estudios":
-      return <Experiencia id={id}/>;
-    case "skills":
-      return <Habiidades />
-    case "contacto":
-      return <Contacto />;
-    default:
-      return <Error501 />;
-  }
+export default function Resultado() {
+  return (
+    <Routes>
+      {/* La ruta base ("/") muestra la Introducción */}
+      <Route path="/" element={<Intro />} />
+      <Route path="/proyectos" element={<Proyecto />} />
+      <Route path="/laboral" element={<Experiencia id="laboral" />} />
+      <Route path="/carreras" element={<Experiencia id="carreras" />} />
+      <Route path="/skills" element={<Habiidades />} />
+      <Route path="/contacto" element={<Contacto />} />
+
+      {/* Si el usuario escribe una URL inventada, le mostramos tu Error 501 */}
+      <Route path="*" element={<Error501 />} />
+    </Routes>
+  );
 }

@@ -1,15 +1,14 @@
+import { NavLink } from 'react-router-dom';
 import Resultado from "./Resultado.jsx";
-import { useState } from "react";
 export default function Navegador() {
-  const [active, setActive] = useState("intro");
   const menu = [
-    { id: "intro", label: "Introducción" },
-    { id: "proyectos", label: "Buscar Proyectos" },
-    { id: "empresas", label: "Experiencia laboral" },
-    { id: "estudios", label: "Carreras" },
-    { id: "skills", label: "Habilidades" },
-    { id: "personal", label: "Gustos Personales" },
-    { id: "contacto", label: "Contacto" },
+    { id: "intro", path: "/", label: "Introducción" },
+    { id: "proyectos", path: "/proyectos", label: "Buscar Proyectos" },
+    { id: "empresas", path: "/laboral", label: "Experiencia laboral" },
+    { id: "estudios", path: "/carreras", label: "Carreras" },
+    { id: "skills", path: "/skills" ,label: "Habilidades" },
+    { id: "personal", path: "/personal", label: "Gustos Personales" },
+    { id: "contacto", path: "/contacto", label: "Contacto" },
   ];
   return (
     <>
@@ -24,27 +23,30 @@ export default function Navegador() {
           }}
         >
           {menu.map((e) => (
-            <button
+            <NavLink
               key={e.id}
-              style={{
-                background: active === e.id ? "#3b82f6" : "transparent",
-                color: active === e.id ? "white" : "#374151",
+              to={e.path}
+              style={({ isActive}) =>({
+                background: isActive? "#3b82f6" : "transparent",
+                color: isActive? "white" : "#374151",
                 padding: "10px 15px",
                 textAlign: "left", // Texto alineado a la izquierda queda mejor en sidebars
+                textDecoration: "none",
                 border: "none",
                 borderRadius: "5px",
                 cursor: "pointer",
-                fontWeight: active === e.id ? "bold" : "normal",
+                fontWeight: isActive? "bold" : "normal",
                 transition: "all 0.2s ease",
-              }}
-              onClick={() => setActive(e.id)}
+              })}
             >
               {e.label}
-            </button>
+            </NavLink>
           ))}
         </nav>
         <main style={{ marginTop: "0", padding: "0 40px" }}>
-          <Resultado id={active} />
+
+            <Resultado />
+
         </main>
       </div>
     </>
