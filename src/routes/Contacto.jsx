@@ -6,8 +6,8 @@ const Contacto = () => {
       <p>¿Tienes alguna oferta, proyecto en mente o simplemente quieres saludar? Rellena el formulario y te responderé lo antes posible.</p>
 
       <form 
-        action="#" // Una vez demos backend, completaré esta acción 
-        method="POST"
+        action="" // Una vez demos backend, completaré esta acción 
+        // method="POST"
         style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '20px' }}
       >
         {/* Campo para el email del usuario */}

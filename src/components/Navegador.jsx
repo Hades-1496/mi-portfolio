@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import Resultado from "./Resultado.jsx";
+import Resultado from "../routes/Resultado.jsx";
 export default function Navegador() {
   const menu = [
     { id: "intro", path: "/", label: "Introducción" },

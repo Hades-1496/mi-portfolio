@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useFetch } from "../hooks/useFetch";
+import { useFetch } from "../hooks/useFetch.jsx";
 import "./Experiencia.js";
 import { Estudios, Laboral } from "./Experiencia.js";
 import Contacto from "./Contacto.jsx";
