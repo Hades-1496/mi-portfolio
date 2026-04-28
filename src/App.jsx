@@ -24,8 +24,8 @@ const Header = () => {
     {isPhoneScreen? <></> :
     <nav >
       <a href="#sobre-mi">Sobre mí</a>
-      <a href="#/proyectos#resultado">Proyectos</a>
-      <a href="/contacto#resultado">Contacto</a>
+      <a href="##resultado">Proyectos</a>
+      <a href="#resultado">Contacto</a>
     </nav>
     }
     
