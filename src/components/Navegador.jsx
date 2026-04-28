@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react'; // Para el responsive dentro de navegador
 import Resultado from "../routes/Resultado.jsx";
 export default function Navegador() {
   const menu = [
@@ -10,9 +11,22 @@ export default function Navegador() {
     { id: "personal", path: "/personal", label: "Gustos Personales" },
     { id: "contacto", path: "/contacto", label: "Contacto" },
   ];
+  const [isPhoneScreen, setIsPhoneScreen] = useState(window.innerWidth < 600);
+
+  useEffect(() => {
+    const sizeCheck = () => {
+      setIsPhoneScreen(window.innerWidth < 600);
+    }
+    window.addEventListener('resize', sizeCheck);
+    return () => window.removeEventListener('resize', sizeCheck);
+  }, []);
+  console.log("¿Es pantalla de móvil?:", isPhoneScreen);
   return (
     <>
-      <div style={{ display: "grid", gridTemplateColumns: "250px 1fr" }}>
+    {/* Distribución navegador y resultado */}
+      <div style={!isPhoneScreen ? { display: "grid", gridTemplateColumns: "250px 1fr" } : { display: "flex", flexDirection: "column" }}>
+
+        {/* Navegador */}
         <nav
           className="#navegador"
           style={{
@@ -43,6 +57,7 @@ export default function Navegador() {
             </NavLink>
           ))}
         </nav>
+        {/* Resultado, siendo el main tamibén */}
         <main style={{ marginTop: "0", padding: "0 40px" }}>
 
             <Resultado />

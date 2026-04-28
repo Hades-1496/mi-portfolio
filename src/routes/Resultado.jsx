@@ -82,6 +82,7 @@ const Proyecto = () => {
   }
   return (
     <section id="resultado" className="section">
+
       {/* Buscador proyecto */}
       <div style={{ marginBottom: "20px" }}>
         <h2>Buscar:</h2>
@@ -161,7 +162,8 @@ function Experiencia({ id }) {
 }
 
 const Habiidades = () => {
-  // Pude haberlo hecho mejor
+
+  // Pude haberlo hecho mejor (rleacionarlo con un objeto como hice con experiencia)
   return (
     <>
       <section id="resultado" className="section">
@@ -199,6 +201,8 @@ const Habiidades = () => {
     </>
   );
 };
+
+
 const Error501 = () => {
   return (
     <section id="resultado" className="section">
