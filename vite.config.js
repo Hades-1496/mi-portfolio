@@ -10,6 +10,6 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] })
   ],
   test: {
-    enviroment: 'sdom',
+    environment: 'jsdom',
   }
 })
