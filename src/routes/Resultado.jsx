@@ -1,13 +1,14 @@
-import { useMemo, useState } from "react";
-import { useFetch } from "../hooks/useFetch.jsx";
+import { useMemo, useState, useContext } from "react";
+import { GithubContext } from "./GithubContext.jsx";
 import "./Experiencia.js";
 import { Estudios, Laboral } from "./Experiencia.js";
 import Contacto from "./Contacto.jsx";
-import { Routes, Route, Navigate } from "react-router-dom";
-const API_URL_1 = "https://api.github.com/users/Hades-1496/repos";
+import { Routes, Route, Navigate, Link, useParams, useNavigate } from "react-router-dom";
+import styles from "./Resultado.module.css";
 
 const Intro = () => {
-  const { data: listaProyectos, loading, error } = useFetch(API_URL_1);
+  const { listaProyectos, loading, error } = useContext(GithubContext);
+
   if (loading) {
     return (
       <section id="resultado" className="section">
@@ -36,9 +37,9 @@ const Intro = () => {
                 <div key={proyecto.id} className="tarjeta-proyecto">
                   <h3>{proyecto.name}</h3>
                   <p>{proyecto.description || "Sin descripción"}</p>
-                  <a href={proyecto.html_url} target="_blank" rel="noreferrer">
-                    Ver código
-                  </a>
+                  <div className={styles.linksContainer}>
+                    <Link to={`/proyecto/${proyecto.id}`} className={styles.linkDetalle}>Ver detalles</Link>
+                  </div>
                 </div>
               ),
           )}
@@ -52,7 +53,8 @@ const Proyecto = () => {
   const [filtro, setFiltro] = useState("");
 
   // Proyectos
-  const { data: listaProyectos, loading, error } = useFetch(API_URL_1);
+  const { listaProyectos, loading, error } = useContext(GithubContext);
+
   // useMemo en el buscador: Sólo lo recalculará si cambian los repos o tu búsqueda.
   const proyectosFiltrados = useMemo(
     () =>
@@ -84,20 +86,14 @@ const Proyecto = () => {
     <section id="resultado" className="section">
 
       {/* Buscador proyecto */}
-      <div style={{ marginBottom: "20px" }}>
+      <div className={styles.searchContainer}>
         <h2>Buscar:</h2>
         <input
           type="text"
           placeholder="Busca por nombre de proyecto..."
           value={filtro}
           onChange={(e) => setFiltro(e.target.value)}
-          style={{
-            padding: "10px",
-            width: "30%",
-            maxWidth: "400px",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-          }}
+          className={styles.searchInput}
         />
       </div>
 
@@ -109,9 +105,10 @@ const Proyecto = () => {
             <div key={proyecto.id} className="tarjeta-proyecto">
               <h3>{proyecto.name}</h3>
               <p>{proyecto.description || "Sin descripción"}</p>
-              <a href={proyecto.html_url} target="_blank" rel="noreferrer">
-                Ver código
-              </a>
+              <div className={styles.linksContainer}>
+                <Link to={`/proyecto/${proyecto.id}`} className={styles.linkDetalle}>Ver detalles</Link>
+                
+              </div>
             </div>
           ))
         ) : (
@@ -129,14 +126,14 @@ function Experiencia({ id }) {
         <section id="resultado" className="section">
           <h2>Experiencia Laboral</h2>
           {Laboral.map((e) => (
-            <article key={e.id} style={{ margin: "20px 0" }}>
-              <h3 style={{ marginBottom: "0" }}>{e.title}</h3>
-              <p style={{ fontSize: "0.8rem", margin: "0", padding: "0" }}>
+            <article key={e.id} className={styles.experienciaArticle}>
+              <h3 className={styles.experienciaTitle}>{e.title}</h3>
+              <p className={styles.experienciaDate}>
                 {e.occupation}
                 <br />
                 {e.date}
               </p>
-              <p style={{ fontWeight: "bold" }}>{e.description}</p>
+              <p className={styles.experienciaDesc}>{e.description}</p>
             </article>
           ))}
         </section>
@@ -146,14 +143,14 @@ function Experiencia({ id }) {
         <section id="resultado" className="section">
           <h2>Carreras</h2>
           {Estudios.map((e) => (
-            <article key={e.id}>
-              <h3 style={{ marginBottom: "0" }}>{e.title}</h3>
-              <p style={{ fontSize: "0.8rem", margin: "0", padding: "0" }}>
+            <article key={e.id} className={styles.experienciaArticle}>
+              <h3 className={styles.experienciaTitle}>{e.title}</h3>
+              <p className={styles.experienciaDate}>
                 {e.institution}
                 <br />
                 {e.date}
               </p>
-              <p style={{ fontWeight: "bold" }}>{e.desc}</p>
+              <p className={styles.experienciaDesc}>{e.desc}</p>
             </article>
           ))}
         </section>
@@ -169,7 +166,7 @@ const Habiidades = () => {
       <section id="resultado" className="section">
         <article>
           <h2>Soft Skills</h2>
-          <ul style={{ textDecoration: "none" }}>
+          <ul className={styles.skillsList}>
             <li>Flexible</li>
             <li>Curioso</li>
             <li>Resolutivo</li>
@@ -178,7 +175,7 @@ const Habiidades = () => {
         </article>
         <article>
           <h2>Hard Skills/Conocimientos</h2>
-          <ul style={{ textDecoration: "none" }}>
+          <ul className={styles.skillsList}>
             <li>Adobe AutoCAD</li>
             <li>Búsqueda de subvencioones</li>
             <li>Conocimientos de arquitectura ARM</li>
@@ -202,6 +199,46 @@ const Habiidades = () => {
   );
 };
 
+const ProyectoDetalle = () => {
+  // useParams extrae el parámetro dinámico ':id' directamente de la URL
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { listaProyectos, loading, error } = useContext(GithubContext);
+
+  if (loading || error) return null;
+
+  // Buscamos el proyecto exacto usando el id
+  const proyecto = listaProyectos.find((p) => p.id.toString() === id);
+
+  if (!proyecto) {
+    return (
+      <div className={styles.overlay} onClick={() => navigate(-1)}>
+        <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+          <h2>Proyecto no encontrado</h2>
+          <button onClick={() => navigate(-1)} className={`${styles.btnCerrar} ${styles.btnCerrarMargin}`}>Cerrar</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.overlay} onClick={() => navigate(-1)}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <h2 className={styles.modalTitle}>{proyecto.name}</h2>
+        <p><strong>Descripción:</strong> {proyecto.description || "Sin descripción detallada disponible."}</p>
+        <p><strong>Lenguaje principal:</strong> {proyecto.language || "No especificado"}</p>
+        <p><strong>Estrellas:</strong> ⭐ {proyecto.stargazers_count}</p>
+        <p><strong>Última actualización:</strong> {new Date(proyecto.updated_at).toLocaleDateString()}</p>
+        
+        <div className={styles.modalActions}>
+          <a href={proyecto.html_url} target="_blank" rel="noreferrer" className={styles.btnGithub}>Ver código en GitHub</a>
+          <button onClick={() => navigate(-1)} className={styles.btnCerrar}>Cerrar</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 const Error501 = () => {
   return (
@@ -222,6 +259,9 @@ export default function Resultado() {
       <Route path="/carreras" element={<Experiencia id="carreras" />} />
       <Route path="/skills" element={<Habiidades />} />
       <Route path="/contacto" element={<Contacto />} />
+
+      {/* Ruta Dinámica para los detalles del proyecto */}
+      <Route path="/proyecto/:id" element={<><Proyecto /><ProyectoDetalle /></>} />
 
       {/* Si el usuario escribe una URL inventada, le mostramos tu Error 501 */}
       <Route path="*" element={<Error501 />} />

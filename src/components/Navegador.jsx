@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { useState, useEffect } from 'react'; // Para el responsive dentro de navegador
+import { useState } from 'react'; 
 import Resultado from "../routes/Resultado.jsx";
 export default function Navegador() {
   const menu = [
@@ -11,35 +11,31 @@ export default function Navegador() {
     { id: "personal", path: "/personal", label: "Gustos Personales" },
     { id: "contacto", path: "/contacto", label: "Contacto" },
   ];
-  const [isPhoneScreen, setIsPhoneScreen] = useState(window.innerWidth < 600);
+  
+  // Estado para controlar si el menú de hamburguesa está abierto o cerrado
+  const [menuAbierto, setMenuAbierto] = useState(false);
 
-  useEffect(() => {
-    const sizeCheck = () => {
-      setIsPhoneScreen(window.innerWidth < 600);
-    }
-    window.addEventListener('resize', sizeCheck);
-    return () => window.removeEventListener('resize', sizeCheck);
-  }, []);
-  console.log("¿Es pantalla de móvil?:", isPhoneScreen);
   return (
     <>
     {/* Distribución navegador y resultado */}
-      <div style={!isPhoneScreen ? { display: "grid", gridTemplateColumns: "250px 1fr" } : { display: "flex", flexDirection: "column" }}>
+      <div className="layout-container">
 
         {/* Navegador */}
-        <nav
-          className="#navegador"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            padding: "20px",
-          }}
-        >
+        <div>
+          {/* Botón de hamburguesa (visible solo en móviles por CSS) */}
+          <button 
+            className="menu-hamburguesa" 
+            onClick={() => setMenuAbierto(!menuAbierto)}
+          >
+            {menuAbierto ? "✖ Cerrar menú" : "☰ Menú"}
+          </button>
+
+          <nav className={`navegador-lateral ${menuAbierto ? "abierto" : ""}`}>
           {menu.map((e) => (
             <NavLink
               key={e.id}
               to={e.path}
+              onClick={() => setMenuAbierto(false)} // Cierra el menú al hacer clic
               style={({ isActive}) =>({
                 background: isActive? "#3b82f6" : "transparent",
                 color: isActive? "white" : "#374151",
@@ -56,9 +52,11 @@ export default function Navegador() {
               {e.label}
             </NavLink>
           ))}
-        </nav>
+          </nav>
+        </div>
+
         {/* Resultado, siendo el main tamibén */}
-        <main style={{ marginTop: "0", padding: "0 40px" }}>
+        <main className="main-content" style={{ marginTop: "0", padding: "0 40px" }}>
 
             <Resultado />
 

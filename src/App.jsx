@@ -1,33 +1,18 @@
 import "./App.css";
-import "./hooks/useFetch.jsx";
-import "./components/Navegador.jsx";
-import { useState, useEffect } from 'react'; // Para el responsive dentro de navegador
-import "./App.css";
 import Navegador from "./components/Navegador.jsx";
 
 // --- COMPONENTES DE SECCIÓN ---
 
 const Header = () => {
-  const [isPhoneScreen, setIsPhoneScreen] = useState(window.innerWidth < 600);
-
-  useEffect(() => {
-    const sizeCheck = () => {
-      setIsPhoneScreen(window.innerWidth < 600);
-    }
-    window.addEventListener('resize', sizeCheck);
-    return () => window.removeEventListener('resize', sizeCheck);
-  }, []);
     return (
   
   <header className="header">
     <h1>Hades Otero</h1>
-    {isPhoneScreen? <></> :
-    <nav >
+    <nav className="nav-desktop">
       <a href="#sobre-mi">Sobre mí</a>
       <a href="##resultado">Proyectos</a>
       <a href="#resultado">Contacto</a>
     </nav>
-    }
     
   </header>
 );

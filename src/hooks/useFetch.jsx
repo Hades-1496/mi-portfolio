@@ -12,7 +12,10 @@ export const useFetch = (API) => {
       setLoading(true);
     const response = await fetch(API);
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+              if (response.status === 403) {
+                throw new Error(`Error HTTP 403: Límite de peticiones a GitHub superado. Intenta de nuevo en un rato.`);
+              }
+              throw new Error(`Error HTTP: ${response.status} - Verifica tu enlace de la API`);
     }
     setData(await response.json());
   }
