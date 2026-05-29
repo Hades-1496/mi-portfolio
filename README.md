@@ -17,7 +17,12 @@ Basado en el feedback recibido, actualmente el portfolio cubre y requiere las si
 - [x] **CSS Modules** (Migrados todos los estilos *inline* en componentes a hojas locales con extensión `.module.css`)
 - [x] **Responsive ~600px** (Implementado mediante media queries CSS, eliminando comprobaciones innecesarias con JS)
 - [x] **Testing Unitario** (Añadidos tests comprobando estados asíncronos y mocks con Vitest)
-- [ ] **Deploy** (Por configurar y subir a GitHub Pages)
+- [x] **Deploy** (Desplegado en Vercel y configurado para GitHub Pages)
+
+### Futuras Mejoras (Opcionales)
+- [ ] **Refactorización de componentes:** Dividir `Resultado.jsx` en múltiples archivos más pequeños y mantenibles.
+- [ ] **Estética personalizada:** Implementar un diseño más personal con estética retro/Doom.
+- [ ] **Ampliación de Tests:** Añadir una batería de tests más robusta para cubrir componentes de interfaz de usuario y hooks adicionales.
 
 ## Tecnologías Principales
 - **React** + **Vite**
