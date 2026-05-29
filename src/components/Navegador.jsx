@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Resultado from "../routes/Resultado.jsx";
 export default function Navegador() {
   const menu = [
-    { id: "intro", path: "/mi-portfolio/", label: "Introducción" },
+    { id: "intro", path: "/", label: "Introducción" },
     { id: "proyectos", path: "/proyectos", label: "Buscar Proyectos" },
     { id: "empresas", path: "/laboral", label: "Experiencia laboral" },
     { id: "estudios", path: "/carreras", label: "Carreras" },
