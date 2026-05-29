@@ -23,6 +23,10 @@ Basado en el feedback recibido, actualmente el portfolio cubre y requiere las si
 - [ ] **Refactorización de componentes:** Dividir `Resultado.jsx` en múltiples archivos más pequeños y mantenibles.
 - [ ] **Estética personalizada:** Implementar un diseño más personal con estética retro/Doom.
 - [ ] **Ampliación de Tests:** Añadir una batería de tests más robusta para cubrir componentes de interfaz de usuario y hooks adicionales.
+- [ ] **LinkedIn:** Añadido de enlace de LinkedIn.
+- [ ] **Sección Personal:** Completado de gustos personales.
+- [ ] **Perfil:** Añadido de foto de perfil.
+- [ ] **Contacto:** Añadido de funcionamiento real del correo electrónico.
 
 ## Tecnologías Principales
 - **React** + **Vite**

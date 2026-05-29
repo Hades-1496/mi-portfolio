@@ -7,7 +7,7 @@ import { GithubProvider } from './routes/GithubContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/mi-portfolio/">
       <GithubProvider>
         <App />
       </GithubProvider>
