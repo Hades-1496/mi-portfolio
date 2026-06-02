@@ -27,6 +27,8 @@ Basado en el feedback recibido, actualmente el portfolio cubre y requiere las si
 - [ ] **Sección Personal:** Completado de gustos personales.
 - [ ] **Perfil:** Añadido de foto de perfil.
 - [ ] **Contacto:** Añadido de funcionamiento real del correo electrónico.
+  - *Opción A:* Integrar una API de terceros (EmailJS o Web3Forms) para un despliegue rápido y seguro.
+  - *Opción B:* Desarrollar un Backend propio con Node.js (Express + Nodemailer) para demostrar habilidades Fullstack.
 
 ## Tecnologías Principales
 - **React** + **Vite**

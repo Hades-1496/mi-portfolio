@@ -1,163 +1,1168 @@
-/* Variables de color para facilitar la personalización */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap');
+
+/* ==========================================
+   DOOM STYLE DESIGN SYSTEM - RETRO TERMINAL
+   ========================================== */
+
+/* Custom fonts already loaded in index.html */
 :root {
-  --color-fondo: #f9fafb;
-  --color-texto: #1f2937;
-  --color-primario: #3b82f6;
-  --color-secundario: #ffffff;
+  --color-fondo: #0a0a0c;
+  --color-texto: #d1d5db;
+  --color-texto-muted: #85858b;
+  --color-primario: #ff3333; /* Blood Red */
+  --color-primario-hover: #ff5555;
+  --color-secundario: #18181c; /* Dark Slate Metal */
+  --color-borde: #3f3f46; /* Steel Plate Border */
+  --color-neon-green: #39ff14; /* Toxic Plasma Green */
+  --color-armor-yellow: #ffcc00; /* Armor Yellow */
+  --color-gold: #ffd700;
+  
+  --font-display: 'Press Start 2P', monospace;
+  --font-terminal: 'VT323', monospace;
+  --font-body: 'Outfit', system-ui, -apple-system, sans-serif;
+}
+
+/* Base resets & layouts */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  cursor: crosshair; /* Doom crosshair cursor */
 }
 
 body {
-  margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
   background-color: var(--color-fondo);
   color: var(--color-texto);
-  line-height: 1.6;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  overflow-x: hidden;
+  letter-spacing: 0.5px;
+  background-image: 
+    radial-gradient(circle at 50% 30%, rgba(255, 51, 51, 0.08), transparent 50%),
+    radial-gradient(circle at 10% 80%, rgba(57, 255, 20, 0.05), transparent 45%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Screen Shake (Triggered by Context) */
+.doom-shaker-container.shaking {
+  animation: screenShake 0.15s infinite;
+}
+
+@keyframes screenShake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(0px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(2px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(2px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
 
 .portfolio-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 20px 160px 20px; /* Space at bottom for HUD */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
 }
 
-/* Header */
+/* --- CRT & VIGNETTE EFFECTS --- */
+.crt-scanlines {
+  display: none;
+}
+
+.crt-screen-flicker {
+  display: none;
+}
+
+.crt-vignette {
+  display: none;
+}
+
+.crt-matrix-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 255, 0, 0.03);
+  z-index: 9998;
+  pointer-events: none;
+  visibility: hidden;
+}
+.crt-matrix-screen.active {
+  visibility: visible;
+  animation: matrixScan 5s linear infinite;
+}
+
+@keyframes matrixScan {
+  0% { filter: hue-rotate(0deg) contrast(1.2); }
+  100% { filter: hue-rotate(360deg) contrast(1.5); }
+}
+
+/* Blood Splatter on Hurt */
+.blood-splatter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 80px rgba(255, 0, 0, 0.8);
+  background: rgba(255, 0, 0, 0.15);
+  z-index: 10003;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.05s ease;
+}
+.blood-splatter-overlay.active {
+  opacity: 1;
+}
+
+/* --- HEADER & BRANDING --- */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 30px 0;
+  border-bottom: 3px double var(--color-borde);
+  margin-bottom: 40px;
 }
 
 .header h1 {
-  margin: 0;
+  font-family: var(--font-display);
   font-size: 1.5rem;
   color: var(--color-primario);
+  text-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
+  letter-spacing: -1.5px;
+  animation: pulseLogo 3s infinite alternate;
+}
+
+@keyframes pulseLogo {
+  0% { text-shadow: 0 0 4px rgba(255, 51, 51, 0.4); }
+  100% { text-shadow: 0 0 12px rgba(255, 51, 51, 0.9), 0 0 20px rgba(255, 51, 51, 0.4); }
+}
+
+.header nav {
+  display: flex;
+  gap: 20px;
 }
 
 .header nav a {
-  margin-left: 20px;
   text-decoration: none;
-  color: var(--color-texto);
-  font-weight: 500;
-  transition: color 0.3s ease;
+  color: var(--color-texto-muted);
+  font-family: var(--font-body);
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+  padding: 5px 10px;
+  border: 1px solid transparent;
 }
 
 .header nav a:hover {
   color: var(--color-primario);
+  border-bottom: 2px solid var(--color-primario);
+  text-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
 }
 
-/* Secciones generales */
-.section {
-  padding: 0;
+/* --- BRUTALIST GRID & CONTAINER LAYOUT --- */
+.layout-container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
 }
 
+/* Sidebar Navigation */
+.navegador-lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  background: var(--color-secundario);
+  border: 4px double var(--color-borde);
+  border-radius: 0px; /* Sharp retro angles */
+  position: sticky;
+  top: 40px;
+  box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.navegador-lateral a {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  color: var(--color-texto-muted);
+  background: rgba(0, 0, 0, 0.2);
+  border-left: 5px solid transparent;
+  transition: all 0.15s ease;
+}
+
+/* Arrow indicator on hover/active */
+.navegador-lateral a::before {
+  content: '▶';
+  color: var(--color-primario);
+  margin-right: 8px;
+  opacity: 0;
+  transform: translateX(-5px);
+  transition: all 0.15s ease;
+}
+
+.navegador-lateral a:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.navegador-lateral a:hover {
+  color: var(--color-primario);
+  background: rgba(255, 51, 51, 0.05);
+  border-left-color: var(--color-primario);
+  text-shadow: 0 0 5px rgba(255, 51, 51, 0.8);
+}
+
+.navegador-lateral a.active {
+  color: var(--color-primario) !important;
+  background: rgba(255, 51, 51, 0.1) !important;
+  border-left-color: var(--color-primario) !important;
+  text-shadow: 0 0 8px rgba(255, 51, 51, 0.9) !important;
+}
+
+.navegador-lateral a.active::before {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+/* Main Content Terminal styling */
+.main-content {
+  background: #0d0d11;
+  border: 4px solid var(--color-borde);
+  padding: 30px;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 5px 5px 0px rgba(0, 0, 0, 0.5);
+  position: relative;
+  min-height: 500px;
+}
+
+/* Custom horizontal rules / bars */
 .section h2 {
-  font-size: 2rem;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--color-primario);
+  margin-bottom: 25px;
+  text-shadow: 0 0 6px rgba(255, 51, 51, 0.5);
+  border-bottom: 3px solid var(--color-primario);
+  padding-bottom: 10px;
+  position: relative;
+}
+
+.section h2::after {
+  content: 'U.A.C. SECURE FILE';
+  position: absolute;
+  right: 0;
+  bottom: 0px;
+  font-size: 0.6rem;
+  background: var(--color-primario);
+  color: #000;
+  padding: 2px 8px;
+  font-family: var(--font-display);
+  text-shadow: none;
+}
+
+.section p {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  color: #c4c4cc;
   margin-bottom: 20px;
+  line-height: 1.6;
 }
 
-/* Hero / Sobre mí */
-.hero {
-  text-align: center;
-  padding: 100px 0;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  max-width: 600px;
-  margin: 0 auto;
-  color: #4b5563;
-}
-
-/* Proyectos (Grid) */
+/* --- CARDS & ITEMS (Industrial Metal Look) --- */
 .grid-proyectos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
 }
 
 .tarjeta-proyecto {
-  background: var(--color-secundario);
+  background: #15151a;
+  border: 3px solid var(--color-borde);
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  border: 1px solid #e5e7eb;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
+}
+
+.tarjeta-proyecto::before {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: var(--color-armor-yellow);
+  font-size: 0.9rem;
+}
+
+.tarjeta-proyecto:hover {
+  transform: translate(-2px, -2px);
+  border-color: var(--color-neon-green);
+  box-shadow: 6px 6px 0px rgba(57, 255, 20, 0.2);
 }
 
 .tarjeta-proyecto h3 {
-  margin-top: 0;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: #fff;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+}
+
+.tarjeta-proyecto p {
+  font-size: 1.05rem;
+  color: var(--color-texto-muted);
+  height: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tarjeta-proyecto a {
   display: inline-block;
   margin-top: 15px;
-  color: var(--color-primario);
+  color: var(--color-neon-green);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
   text-decoration: none;
-  font-weight: bold;
+  transition: all 0.2s;
 }
 
-/* Footer / Contacto */
-.footer {
-  text-align: center;
-  border-top: 1px solid #e5e7eb;
-  padding-bottom: 40px;
+.tarjeta-proyecto a:hover {
+  color: #fff;
+  text-shadow: 0 0 5px var(--color-neon-green);
 }
 
-.enlaces-contacto a {
-  display: inline-block;
-  margin: 0 10px;
-  padding: 10px 20px;
-  background-color: var(--color-primario);
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: opacity 0.3s;
-}
-
-.enlaces-contacto a:hover {
-  opacity: 0.8;
-}
-
-/* --- Layout Principal y Menú Hambuguesa --- */
-.layout-container {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-}
-
-.menu-hamburguesa {
-  display: none;
-  background-color: var(--color-primario);
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin: 0 20px;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.navegador-lateral {
+/* --- THE DOOM STATUS BAR HUD (Fixed Bottom) --- */
+.doom-hud-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(180deg, #1c1c1f 0%, #0d0d0f 100%);
+  border-top: 6px ridge #3e3e42;
+  z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
 }
 
-/* Ajustes para móviles (menores a 600px) */
+.doom-hud-level-banner {
+  height: 24px;
+  width: 100%;
+  background: #000;
+  border-bottom: 2px solid #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  color: var(--color-armor-yellow);
+  letter-spacing: 0.5px;
+}
+
+.doom-hud-blink-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-primario);
+  animation: blinkDot 1s infinite;
+}
+
+@keyframes blinkDot {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.godmode-badge {
+  background: var(--color-primario);
+  color: #000;
+  font-weight: bold;
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-size: 0.55rem;
+  margin-left: 10px;
+}
+
+.doom-hud-content {
+  width: 100%;
+  max-width: 960px;
+  height: 92px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) 80px repeat(2, 1fr) 1.5fr;
+  align-items: center;
+  justify-items: center;
+  padding: 0 10px;
+}
+
+.hud-stat-box {
+  text-align: center;
+  width: 100%;
+  height: 78px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 3px double #2e2e33;
+  padding: 0 5px;
+  cursor: pointer; /* make stats clickable for secrets */
+  user-select: none;
+}
+
+.hud-stat-box:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.hud-stat-label {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--color-texto-muted);
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.number-font {
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+.red-led {
+  font-size: 1.6rem;
+  color: var(--color-primario);
+  text-shadow: 0 0 8px rgba(255, 51, 51, 0.8), 0 0 15px rgba(255, 51, 51, 0.3);
+  letter-spacing: -1px;
+}
+
+.hud-portrait-box {
+  width: 72px;
+  height: 72px;
+  background: #141416;
+  border: 3px ridge #4e4e52;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hud-weapons-panel {
+  width: 100%;
+  padding-left: 15px;
+  text-align: center;
+}
+
+.hud-weapons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.hud-weapon-btn {
+  background: #15151a;
+  border: 1px solid #333;
+  color: var(--color-texto-muted);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  padding: 4px 2px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  transition: all 0.1s ease;
+}
+
+.hud-weapon-btn:hover {
+  border-color: var(--color-primario);
+  color: #fff;
+}
+
+.hud-weapon-btn.active {
+  background: var(--color-primario);
+  color: #000;
+  border-color: #ff5555;
+}
+
+.weapon-num {
+  font-family: var(--font-display);
+  font-size: 0.5rem;
+  margin-bottom: 1px;
+}
+
+/* Decorative HUD Rivets */
+.hud-rivet {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3a3a3d;
+  box-shadow: inset 1px 1px 1px #000, 1px 1px 1px rgba(255,255,255,0.1);
+}
+.hud-rivet.top-left { top: 6px; left: 8px; }
+.hud-rivet.top-right { top: 6px; right: 8px; }
+.hud-rivet.bottom-left { bottom: 6px; left: 8px; }
+.hud-rivet.bottom-right { bottom: 6px; right: 8px; }
+
+
+/* --- DOOM WEAPON SYSTEM OVERLAY --- */
+.doom-weapon-container {
+  position: fixed;
+  bottom: 94px; /* anchors right above status bar */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9990;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100px;
+}
+
+.weapon-svg {
+  transform-origin: bottom center;
+  transition: transform 0.05s ease;
+  filter: drop-shadow(0px -4px 10px rgba(0,0,0,0.7));
+}
+
+/* Shoot Recoil Animations */
+.doom-weapon-container.firing .weapon-svg.pistol {
+  animation: pistolRecoil 0.25s ease-out;
+}
+.doom-weapon-container.firing .weapon-svg.shotgun {
+  animation: shotgunRecoil 0.8s ease-out;
+}
+.doom-weapon-container.firing .weapon-svg.plasma {
+  animation: plasmaRecoil 0.12s infinite alternate;
+}
+.doom-weapon-container.firing .weapon-svg.bfg {
+  animation: bfgRecoil 1.2s ease-out;
+}
+
+@keyframes pistolRecoil {
+  0% { transform: translateY(0) scale(1); }
+  25% { transform: translateY(20px) scale(0.9) rotate(-3deg); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes shotgunRecoil {
+  0% { transform: translateY(0) scale(1); }
+  15% { transform: translateY(50px) scale(0.8) rotate(-8deg); }
+  50% { transform: translateY(50px) scale(0.85); }
+  85% { transform: translateY(10px) scale(0.98); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes plasmaRecoil {
+  0% { transform: translateY(0) translatex(-1px); }
+  100% { transform: translateY(8px) translatex(1px); }
+}
+
+@keyframes bfgRecoil {
+  0% { transform: translateY(0) scale(1); }
+  40% { transform: translateY(5px) scale(1.02); } /* charging vibration */
+  42% { transform: translateY(5px) scale(0.98); }
+  45% { transform: translateY(100px) scale(0.7) rotate(2deg); } /* fire kickback */
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* Pulse glow for plasma weapon */
+.plasma-coil-glow {
+  animation: pulseNeon 0.5s infinite alternate;
+}
+
+@keyframes pulseNeon {
+  0% { fill: #0088cc; opacity: 0.6; }
+  100% { fill: #00ffff; opacity: 1; filter: drop-shadow(0 0 3px #00ffff); }
+}
+
+.bfg-core-glow {
+  animation: pulseBfgCore 0.3s infinite alternate;
+}
+
+@keyframes pulseBfgCore {
+  0% { fill: #1d6e12; opacity: 0.7; }
+  100% { fill: #39ff14; opacity: 1; filter: drop-shadow(0 0 6px #39ff14); }
+}
+
+.bfg-flash-pulse {
+  animation: bfgFlashPulse 0.4s ease-out;
+}
+
+@keyframes bfgFlashPulse {
+  0% { transform: scale(0.2); opacity: 0.9; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+
+/* --- INTERACTIVE MONSTERS INVASION --- */
+.doom-monster-card {
+  user-select: none;
+  filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.6));
+  transition: transform 0.1s ease;
+}
+
+.monster-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes monsterFloat {
+  0%, 100% { transform: translate(-50%, -55%); }
+  50% { transform: translate(-50%, -45%); }
+}
+
+.doom-monster-card:hover {
+  transform: translate(-50%, -50%) scale(1.1) !important;
+}
+
+/* Attacking monster flash */
+.doom-monster-card.attacking {
+  animation: attackFlash 0.15s infinite alternate !important;
+}
+
+@keyframes attackFlash {
+  0% { filter: drop-shadow(0 0 15px #ff3333) brightness(1.5); }
+  100% { filter: drop-shadow(0 0 25px #ff3333) brightness(2.2); }
+}
+
+/* Monster Health Bar overlay */
+.monster-health-bar {
+  width: 80%;
+  height: 4px;
+  background: #333;
+  position: absolute;
+  bottom: -8px;
+  left: 10%;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.monster-health-fill {
+  height: 100%;
+  background: var(--color-primario);
+}
+
+.monster-fireball-alert {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  animation: bounceAlert 0.4s infinite alternate;
+}
+
+@keyframes bounceAlert {
+  0% { transform: translateX(-50%) translateY(0); }
+  100% { transform: translateX(-50%) translateY(-5px); }
+}
+
+/* Baron eye glow */
+.baron-eye-glow {
+  animation: eyeBlink 2s infinite alternate;
+}
+
+@keyframes eyeBlink {
+  0%, 90% { opacity: 1; }
+  95%, 100% { opacity: 0; }
+}
+
+
+/* --- TERMINAL NOTIFICATION TEXT OVERLAY (Top Center) --- */
+.doom-terminal-notification {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10005;
+  background: rgba(0, 0, 0, 0.85);
+  border: 3px double var(--color-primario);
+  padding: 12px 24px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 51, 51, 0.4);
+  pointer-events: none;
+  animation: slideNotification 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+@keyframes slideNotification {
+  0% { transform: translateX(-50%) translateY(-50px); opacity: 0; }
+  100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+.doom-terminal-glitch-text {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--color-neon-green);
+  text-shadow: 0 0 5px var(--color-neon-green);
+  letter-spacing: -0.5px;
+  animation: textFlicker 0.25s infinite alternate;
+}
+
+@keyframes textFlicker {
+  0% { opacity: 0.95; }
+  100% { opacity: 1; }
+}
+
+
+/* --- PORTFOLIO PAGES & COMPONENT STYLING --- */
+
+/* Intro / About me Section - Dossier Style */
+.hero {
+  padding: 40px 0 20px 0;
+  text-align: left;
+}
+
+.doom-hero-dossier {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 30px;
+  background: #101014;
+  border: 4px double var(--color-borde);
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
+}
+
+.doom-hero-avatar-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.doom-hero-avatar-image {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 4px ridge var(--color-borde);
+  background: #000;
+  object-fit: cover;
+  image-rendering: pixelated;
+  box-shadow: inset 0 0 15px rgba(255, 51, 51, 0.5);
+  animation: avatarGlitch 8s infinite steps(2);
+}
+
+@keyframes avatarGlitch {
+  0%, 94%, 100% { filter: none; }
+  95% { filter: hue-rotate(90deg) contrast(1.5); }
+  97% { filter: invert(0.1) saturate(2); }
+  98% { filter: skewX(10deg); }
+}
+
+.doom-hero-avatar-label {
+  font-family: var(--font-display);
+  font-size: 0.55rem;
+  color: var(--color-primario);
+  text-shadow: 0 0 4px rgba(255, 51, 51, 0.6);
+  letter-spacing: -0.5px;
+}
+
+.doom-hero-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.doom-hero-info h2 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-primario);
+  margin-bottom: 15px;
+  border-bottom: 2px solid var(--color-primario);
+  padding-bottom: 8px;
+}
+
+.doom-hero-info p {
+  color: #c4c4cc;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  border-left: none;
+  padding-left: 0;
+}
+
+.doom-dossier-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+}
+
+.doom-dossier-stat-item {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-left: 3px solid var(--color-neon-green);
+}
+
+.doom-dossier-stat-item strong {
+  color: var(--color-armor-yellow);
+}
+
+/* Adjust for mobile dossiers */
 @media (max-width: 600px) {
-  .layout-container { 
+  .doom-hero-dossier {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    display: flex; 
-    flex-direction: column; 
+    gap: 20px;
   }
-  .menu-hamburguesa { display: block; }
-  .navegador-lateral { display: none; }
+  .doom-hero-avatar-frame {
+    width: 160px;
+  }
+}
+
+/* Skills list */
+.skills-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.skills-list-container h3 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--color-armor-yellow);
+  margin-bottom: 12px;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+}
+
+.skills-list li {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  background: #18181c;
+  color: #fff;
+  border: 1px solid var(--color-borde);
+  padding: 8px 16px;
+  transition: all 0.15s ease;
+}
+
+.skills-list li:hover {
+  background: var(--color-primario);
+  color: #000;
+  border-color: var(--color-primario);
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0px rgba(255, 51, 51, 0.3);
+}
+
+/* Experience / CV Articles */
+.experiencia-article {
+  background: #141417;
+  border: 2px solid var(--color-borde);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.4);
+}
+
+.experiencia-article:hover {
+  border-color: var(--color-armor-yellow);
+}
+
+.experiencia-title {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: #fff;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.experiencia-date {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--color-neon-green);
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.experiencia-desc {
+  font-size: 1.15rem;
+}
+
+/* Contact form */
+.contact-section-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding-bottom: 90px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--color-armor-yellow);
+}
+
+.form-input, .form-textarea {
+  background: #08080a;
+  border: 2px solid var(--color-borde);
+  color: #fff;
+  padding: 12px;
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  transition: all 0.15s ease;
+}
+
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.btn-submit {
+  background: var(--color-primario);
+  color: #000;
+  border: none;
+  padding: 15px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: all 0.15s ease;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+  margin-top: 10px;
+}
+
+.btn-submit:hover {
+  background: var(--color-primario-hover);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0px rgba(255, 51, 51, 0.4);
+}
+
+/* --- MONSTER SPAWNER FLOATING PACKS --- */
+.doom-spawner-helper-btn {
+  background: #141416;
+  border: 2px solid var(--color-neon-green);
+  color: var(--color-neon-green);
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  padding: 8px 16px;
+  margin-bottom: 20px;
+  transition: all 0.2s;
+}
+.doom-spawner-helper-btn:hover {
+  background: var(--color-neon-green);
+  color: #000;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
+}
+
+/* --- PROJECT DETAIL MODAL / POPUP (Brutal Retro Overlay) --- */
+.project-detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+}
+
+.project-detail-modal {
+  background: #111114;
+  border: 5px double var(--color-primario);
+  padding: 35px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 0 30px rgba(255, 51, 51, 0.3);
+  position: relative;
+  animation: modalSlide 0.25s ease-out;
+}
+
+@keyframes modalSlide {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.project-detail-modal h2 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--color-primario);
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--color-primario);
+  padding-bottom: 8px;
+}
+
+.project-detail-modal p {
+  font-size: 1.15rem;
+  margin-bottom: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn-github {
+  background: var(--color-neon-green);
+  color: #000;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  padding: 12px 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.2s;
+  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.btn-github:hover {
+  background: #fff;
+  box-shadow: 5px 5px 0px rgba(57, 255, 20, 0.4);
+}
+
+.btn-close {
+  background: #27272a;
+  border: 1px solid var(--color-borde);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  padding: 12px 20px;
+  transition: all 0.2s;
+}
+
+.btn-close:hover {
+  background: #3f3f46;
+}
+
+/* Error 501 page styling */
+.error-page-container {
+  text-align: center;
+  padding: 60px 0;
+}
+.error-page-container h2 {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: var(--color-primario);
+  text-shadow: 0 0 15px rgba(255, 51, 51, 0.8);
+}
+.error-page-container h2::after {
+  display: none;
+}
+
+/* Custom project search input */
+.search-container {
+  margin-bottom: 30px;
+  background: var(--color-secundario);
+  padding: 20px;
+  border: 2px solid var(--color-borde);
+}
+
+.search-container h2 {
+  font-size: 1rem;
+  border: none;
+  margin-bottom: 10px;
+  color: var(--color-armor-yellow);
+}
+.search-container h2::after {
+  display: none;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 450px;
+  background: #000;
+  border: 2px solid var(--color-borde);
+  color: #fff;
+  padding: 12px;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-neon-green);
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+}
+
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+  .layout-container {
+    display: flex;
+    flex-direction: column;
+  }
   
-  /* Esta clase se añade desde React al hacer clic */
-  .navegador-lateral.abierto { display: flex; }
+  .navegador-lateral {
+    position: relative;
+    top: 0;
+    margin-bottom: 20px;
+  }
   
-  /* Reducimos el padding en el móvil para que encaje mejor */
-  .main-content { padding: 0 20px !important; }
+  .doom-hud-content {
+    grid-template-columns: repeat(2, 1fr) 60px repeat(2, 1fr);
+  }
+  
+  .hud-weapons-panel {
+    display: none; /* Hide weapon key panel on small screens to save space */
+  }
+  
+  .doom-weapon-container {
+    bottom: 94px;
+  }
+
+  .weapon-svg.pistol { width: 140px; height: 140px; }
+  .weapon-svg.shotgun { width: 200px; height: 200px; }
+  .weapon-svg.plasma { width: 180px; height: 180px; }
+  .weapon-svg.bfg { width: 250px; height: 250px; }
+}
+
+@keyframes meltScreen {
+  0% {
+    clip-path: polygon(
+      0% 0%, 10% 0%, 20% 0%, 30% 0%, 40% 0%, 50% 0%, 60% 0%, 70% 0%, 80% 0%, 90% 0%, 100% 0%,
+      100% 100%, 90% 100%, 80% 100%, 70% 100%, 60% 100%, 50% 100%, 40% 100%, 30% 100%, 20% 100%, 10% 100%, 0% 100%
+    );
+  }
+  100% {
+    clip-path: polygon(
+      0% 100%, 10% 120%, 20% 115%, 30% 130%, 40% 110%, 50% 125%, 60% 115%, 70% 125%, 80% 110%, 90% 120%, 100% 100%,
+      100% 100%, 90% 100%, 80% 100%, 70% 100%, 60% 100%, 50% 100%, 40% 100%, 30% 100%, 20% 100%, 10% 100%, 0% 100%
+    );
+  }
 }
