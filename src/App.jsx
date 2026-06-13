@@ -5,7 +5,7 @@ import Navegador from './components/Navegador.jsx';
 import DoomHUD from './components/DoomHUD.jsx';
 import CRTOverlay from './components/CRTOverlay.jsx';
 import './App.css';
-import doomAvatar from './assets/doom_avatar.png';
+import profilePicture from './assets/Hades-Perfil.jpeg';
 
 // --- COMPONENTES DE SECCIÓN ---
 
@@ -32,7 +32,7 @@ const Hero = () => {
     <section id="sobre-mi" className="section hero">
       <div className="doom-hero-dossier">
         <div className="doom-hero-avatar-frame">
-          <img src={doomAvatar} alt="Hades Otero Avatar" className="doom-hero-avatar-image" />
+          <img src={profilePicture} alt="Hades Otero Avatar" className="doom-hero-avatar-image" />
           <div className="doom-hero-avatar-label">HADES OTERO</div>
         </div>
         <div className="doom-hero-info">
