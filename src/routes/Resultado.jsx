@@ -183,7 +183,7 @@ const Habiidades = () => {
             <li>Eficiencia energética</li>
             <li>
               Conocimiento de lenguajes de eprogramación como: C, C++,
-              Ensamblador, Java, Javascript, C#, MatLab, PHP
+              Ensamblador, Java, Javascript, C#, MatLab, PHP, Go.
             </li>
             <li>
               Conocimiento de lenguajes de dominio MongoDB y SQL como sus

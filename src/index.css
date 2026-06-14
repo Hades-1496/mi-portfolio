@@ -265,18 +265,6 @@ body {
   position: relative;
 }
 
-.section h2::after {
-  content: 'U.A.C. SECURE FILE';
-  position: absolute;
-  right: 0;
-  bottom: 0px;
-  font-size: 0.6rem;
-  background: var(--color-primario);
-  color: #000;
-  padding: 2px 8px;
-  font-family: var(--font-display);
-  text-shadow: none;
-}
 
 .section p {
   font-family: var(--font-body);

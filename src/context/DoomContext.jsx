@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useEffect, useRef } from 'react';
-import { playPowerup } from '../utils/audio';
 
 export const DoomContext = createContext();
 
@@ -38,7 +37,6 @@ export const DoomProvider = ({ children }) => {
           if (next) {
             setHealth(100);
             setArmor(100);
-            playPowerup();
             triggerGlitchMessage('GOD MODE ON');
           } else {
             triggerGlitchMessage('GOD MODE OFF');
@@ -50,7 +48,6 @@ export const DoomProvider = ({ children }) => {
       else if (cheatBuffer.current.endsWith('idclip')) {
         setNoclip((prev) => {
           const next = !prev;
-          playPowerup();
           triggerGlitchMessage(next ? 'NOCLIP ON' : 'NOCLIP OFF');
           return next;
         });
