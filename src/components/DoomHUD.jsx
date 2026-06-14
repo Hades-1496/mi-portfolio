@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DoomContext } from '../context/DoomContext';
 import { GithubContext } from '../routes/GithubContext';
+import { Estudios, Laboral } from '../routes/Experiencia';
 import DoomguyFace from './DoomguyFace';
 
 export default function DoomHUD() {
@@ -18,9 +19,10 @@ export default function DoomHUD() {
   const navigate = useNavigate();
 
   // Calculate actual project count
-  const projsCount = listaProyectos ? listaProyectos.filter((p) => !p.fork).length : 0;
+  const projsCount = listaProyectos ? listaProyectos.length : 0;
   // Calculate years of experience (started in 2015, current year is 2026)
-  const expYears = 11; 
+  const expJobs = Laboral.length;
+  const expStud =  Estudios.length;
 
   // Update level name based on current route - Professional terminology
   useEffect(() => {
@@ -70,7 +72,7 @@ export default function DoomHUD() {
       </div>
 
       <div className="doom-hud-content">
-        {/* PROJECTS (replaces AMMO) */}
+        {/* PROJECTS*/}
         <div className="hud-stat-box projs-box" onClick={() => navigate('/proyectos')} title="Ir a Proyectos">
           <div className="hud-stat-label">PROJS</div>
           <div className="hud-stat-value number-font red-led">{String(projsCount).padStart(3, '0')}</div>
@@ -87,16 +89,16 @@ export default function DoomHUD() {
           <DoomguyFace health={health} godMode={godMode} weaponState="idle" />
         </div>
 
-        {/* ARMOR Counter */}
-        <div className="hud-stat-box armor-box" title="Blindaje / Habilidades">
+        {/* EXPERIENCE Studies */}
+        <div className="hud-stat-box armor-box" onClick={() => navigate('/carreras')} title="Blindaje / Habilidades">
           <div className="hud-stat-label">ARMOR</div>
-          <div className="hud-stat-value number-font red-led">{String(armor).padStart(3, '0')}%</div>
+          <div className="hud-stat-value number-font red-led">{String(expStud).padStart(3, '0')}%</div>
         </div>
 
-        {/* EXPERIENCE Years (replaces KILLS) */}
-        <div className="hud-stat-box exp-box" onClick={() => navigate('/laboral')} title="Ir a Experiencia">
+        {/* EXPERIENCE Jobs */}
+        <div className="hud-stat-box exp-box" onClick={() => navigate('/laboral')} title="Ir a Experiencia Laboral">
           <div className="hud-stat-label">EXP YRS</div>
-          <div className="hud-stat-value number-font red-led">{String(expYears).padStart(3, '0')}</div>
+          <div className="hud-stat-value number-font red-led">{String(expJobs).padStart(3, '0')}</div>
         </div>
 
         {/* QUICK NAVIGATION PANEL (replaces WEAPONS PANEL) */}
