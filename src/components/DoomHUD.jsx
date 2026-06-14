@@ -91,13 +91,13 @@ export default function DoomHUD() {
 
         {/* EXPERIENCE Studies */}
         <div className="hud-stat-box armor-box" onClick={() => navigate('/carreras')} title="Blindaje / Habilidades">
-          <div className="hud-stat-label">ARMOR</div>
+          <div className="hud-stat-label">EXP STD</div>
           <div className="hud-stat-value number-font red-led">{String(expStud).padStart(3, '0')}%</div>
         </div>
 
         {/* EXPERIENCE Jobs */}
         <div className="hud-stat-box exp-box" onClick={() => navigate('/laboral')} title="Ir a Experiencia Laboral">
-          <div className="hud-stat-label">EXP YRS</div>
+          <div className="hud-stat-label">EXP JBS</div>
           <div className="hud-stat-value number-font red-led">{String(expJobs).padStart(3, '0')}</div>
         </div>
 
